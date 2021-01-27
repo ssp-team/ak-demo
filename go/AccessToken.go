@@ -4,6 +4,7 @@ import (
     "fmt"
     "time"
     "strings"
+    "strconv"
     "encoding/base64"
     "github.com/xxtea/xxtea-go/xxtea"
 )
@@ -11,7 +12,8 @@ import (
 func createAccessToken(accessKeyId string, mediaId string, accessKeySecret string) string{
 
 	ts := time.Now().UnixNano() / 1e6
-    tempStr := accessKeyId + "|" + string(ts) + "|" + mediaId
+    tsStr := strconv.FormatInt(ts,10)
+    tempStr := accessKeyId + "|" + tsStr + "|" + mediaId
     createAccessToken := xxtea.Encrypt( []byte(tempStr), []byte(accessKeySecret))
 	var createAccessTokenStr = base64.StdEncoding.EncodeToString(createAccessToken)
     createAccessTokenStr = strings.Replace(createAccessTokenStr,"+", "-",-1)
